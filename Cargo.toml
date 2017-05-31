@@ -1,10 +1,11 @@
 [package]
 name = "hex-utils"
-version = "0.1.4"
+version = "0.1.5"
 authors = ["Anicka Burova <anicka.burova@gmail.com>"]
 
 [dependencies]
 itertools = "*"
+
 
 
 

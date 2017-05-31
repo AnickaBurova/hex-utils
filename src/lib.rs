@@ -110,7 +110,10 @@ fn it_works() {
     let options = Options { size: 16, pack: vec![2,4], dot: '.' };
     let fmt = options.formatter();
 
-    for line in xxd(content.as_bytes(), Some(options)) {
-        println!("{}", fmt(line));
-    }
+    let res = xxd(content.as_bytes(), Some(options)).map(|line| fmt(line)).fold(String::new(), |mut res, line| { writeln!(&mut res, "{}", line);res});
+    println!("{}", res);
+
+    //for line in xxd(content.as_bytes(), Some(options)).map(|line| fmt(line)) {
+        //println!("{}", line);
+    //}
 }
