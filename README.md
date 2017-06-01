@@ -1,7 +1,7 @@
 # hex-utils
 Xxd output from binary input with configurable formatting."
 
-[Documentation](https://docs.rs/hex-utils/0.1.8/hex_utils/)
+[Documentation](https://docs.rs/hex-utils/0.1.11/hex_utils/)
 
 ```toml
 [dependencies]
