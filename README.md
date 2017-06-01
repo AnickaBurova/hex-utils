@@ -1,2 +1,2 @@
 # hex-utils
-rust hex-dec utilities
+Simple library to produce xxd like output from binary input.
