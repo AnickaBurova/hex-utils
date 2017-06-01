@@ -4,22 +4,57 @@ use std::fmt::Write;
 use std::fs::File;
 use std::iter::Iterator;
 
+/// Options how to create xxd output.
 pub struct Options {
-    size: usize,
-    pack: Vec<usize>,
-    dot: char,
+    /// how many bytes per line
+    pub size: usize,
+    /// how to pack xx bytes next to each other (each value in vec, will put space every that byte)
+    pub pack: Vec<usize>,
+    /// standard xxd will print '.' for non printable char, here you can change it.
+    pub dot: char,
 }
 
 impl Options {
+    /// Create default options
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// extern crate hex_utils;
+    ///
+    /// let options = hex_utils::Options::default().unwrap();
+    ///
+    /// assert_eq!(16, options.size);
+    ///
+    /// ```
     pub fn default() -> Option<Options> {
         Some(
             Options {
                 size: 16,
-                pack: vec![2,4],
+                pack: vec![2,4,8],
                 dot: '.',
             }
             )
     }
+
+    /// Get the options out of Option or get the default ones.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// let options = Some(hex_utils::Options { size: 9, pack: vec![3,5], dot: '#' });
+    ///
+    /// let opt = hex_utils::Options::or_default(options);
+    /// assert_eq!(9, opt.size);
+    /// assert_eq!(vec![3,5], opt.pack);
+    /// assert_eq!('#', opt.dot);
+    ///
+    /// let opt = hex_utils::Options::or_default(None);
+    /// assert_eq!(16, opt.size);
+    /// assert_eq!(vec![2,4,8], opt.pack);
+    /// assert_eq!('.', opt.dot);
+    ///
+    /// ```
     pub fn or_default(options: Option<Options>) -> Options {
         match options {
             Some(o) => o,
@@ -27,6 +62,7 @@ impl Options {
         }
     }
 
+    /// Format the xxd output based on these options.
     pub fn formatter(&self) -> Box<Fn( (usize, String, Option<String>)) -> String> {
             let hex_size =
                     self.size * 2
@@ -40,13 +76,11 @@ impl Options {
     }
 }
 
+/// Iterator over lines returned by xxd.
 pub struct XxdLines<T: Read> {
     iter: Bytes<T>,
     options: Options,
     offset: usize,
-}
-
-impl<T: Read> XxdLines<T> {
 }
 
 impl<T: Read> Iterator for XxdLines<T> {
@@ -91,6 +125,9 @@ impl<T: Read> Iterator for XxdLines<T> {
     }
 }
 
+
+/// Returns xxd iterator over the data created based on options. If options is None, default are
+/// used.
 pub fn xxd<T: Read>( data: T, options: Option<Options>) -> XxdLines<T> {
     XxdLines {
         iter: data.bytes(),
@@ -99,6 +136,7 @@ pub fn xxd<T: Read>( data: T, options: Option<Options>) -> XxdLines<T> {
     }
 }
 
+/// Returns one string of xxd output from data created based on options.
 pub fn xxd_str<T: Read>( data: T, options: Option<Options>) -> String {
     let options = Options::or_default(options);
     let fmt = options.formatter();
@@ -133,11 +171,12 @@ fn print_test() {
     let mut file = File::open("Cargo.toml").unwrap();
     let mut content = String::new();
     let _ = file.read_to_string(&mut content);
-    let options = Options { size: 16, pack: vec![2,4], dot: '.' };
+    //let options = Options { size: 16, pack: vec![2,4], dot: '.' };
     //let fmt = options.formatter();
 
     //let res = xxd(content.as_bytes(), Some(options)).map(|line| fmt(line)).fold(String::new(), |mut res, line| { let _ = writeln!(&mut res, "{}", line);res});
-    let res = xxd_str(content.as_bytes(), Some(options));
+    //let res = xxd_str(content.as_bytes(), Some(options));
+    let res = xxd_str(content.as_bytes(), None);
     println!("{}", res);
 
     //for line in xxd(content.as_bytes(), Some(options)).map(|line| fmt(line)) {
