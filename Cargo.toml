@@ -1,9 +1,12 @@
 [package]
 name = "hex-utils"
-version = "0.1.7"
+version = "0.1.8"
 authors = ["Anicka Burova <anicka.burova@gmail.com>"]
+license-file = "LICENSE"
+description = "Simple library to produce xxd like output from bytes"
 
 [dependencies]
+
 
 
 
