@@ -1,11 +1,12 @@
 [package]
 name = "hex-utils"
-version = "0.1.8"
+version = "0.1.9"
 authors = ["Anicka Burova <anicka.burova@gmail.com>"]
-license-file = "LICENSE"
-description = "Simple library to produce xxd like output from bytes"
+license = "MIT License"
+description = "Xxd output from binary input with configurable formatting."
 
 [dependencies]
+
 
 
 

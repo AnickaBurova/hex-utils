@@ -1,2 +1,2 @@
 # hex-utils
-Simple library to produce xxd like output from binary input.
+Xxd output from binary input with configurable formatting."
