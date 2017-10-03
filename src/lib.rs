@@ -1,3 +1,10 @@
+/**
+ * File: src/lib.rs
+ * Author: Anicka Burova <anicka.burova@gmail.com>
+ * Date: 03.10.2017
+ * Last Modified Date: 03.10.2017
+ * Last Modified By: Anicka Burova <anicka.burova@gmail.com>
+ */
 use std::io::{Read,Bytes};
 use std::fmt::Write;
 #[cfg(test)]
@@ -5,6 +12,7 @@ use std::fs::File;
 use std::iter::Iterator;
 
 /// Format configuration of xxd output
+#[derive(Clone)]
 pub struct Format {
     /// How many bytes per line, the default is 16.
     pub size: usize,
@@ -263,6 +271,8 @@ fn print_test() {
         ascii: true,
         gaps: (1,4)
     };
+    let _ = format.clone();
+
     //let fmt = format.formatter();
 
     //let res = xxd(content.as_bytes(), Some(format)).map(|line| fmt(line)).fold(String::new(), |mut res, line| { let _ = writeln!(&mut res, "{}", line);res});
